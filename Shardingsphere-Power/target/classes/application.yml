@@ -1,0 +1,103 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: order-service
+  #  config:
+  #    import: nacos:order-service-dev.yml
+  #  cloud:
+  #    nacos:
+  #      discovery:
+  #        server-addr: localhost:8848
+  #      config:
+  #        server-addr: localhost:8848
+  #        file-extension: yml
+
+  # ShardingSphere 5.2.1 配置
+  shardingsphere:
+    # 模式配置
+    mode:
+      type: Standalone
+    # 数据源配置
+    datasource:
+      names: ds0, ds1
+      ds0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/db_order_0
+        username: root
+        password: root
+      ds1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/db_order_1
+        username: root
+        password: root
+
+    # 分片规则配置 -
+    rules:
+      sharding:
+        # 表分片规则
+        tables:
+          t_order:
+            # ⚠️ 使用 $->{} 而不是 ${}
+            actual-data-nodes: ds$->{0..1}.t_order_$->{0..1}
+
+            # 分库策略
+            database-strategy:
+              standard:
+                sharding-column: user_id
+                sharding-algorithm-name: db-inline
+
+            # 分表策略
+            table-strategy:
+              standard:
+                sharding-column: order_id
+                sharding-algorithm-name: table-inline
+
+            # 主键生成
+            key-generate-strategy:
+              column: order_id
+              key-generator-name: snowflake
+
+        # 分片算法定义
+        sharding-algorithms:
+          db-inline:
+            type: INLINE
+            props:
+              algorithm-expression: ds$->{user_id % 2}
+          table-inline:
+            type: INLINE
+            props:
+              algorithm-expression: t_order_$->{order_id % 2}
+
+        # 主键生成器
+        key-generators:
+          snowflake:
+            type: SNOWFLAKE
+
+    props:
+      sql-show: true
+
+  # JPA配置
+  jpa:
+    show-sql: false  # 关闭JPA SQL日志（ShardingSphere已显示）
+    hibernate:
+      ddl-auto: none  # 自动更新表结构
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+
+# 日志配置
+logging:
+  level:
+    org.apache.shardingsphere: DEBUG  # 改为DEBUG级别
+    org.springframework.boot.autoconfigure: INFO
+    com.ruchang.orderservice: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
