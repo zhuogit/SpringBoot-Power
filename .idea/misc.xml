@@ -5,6 +5,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/Shardingsphere-Power/pom.xml" />
+        <option value="$PROJECT_DIR$/Nacos-Power/pom.xml" />
       </list>
     </option>
   </component>
