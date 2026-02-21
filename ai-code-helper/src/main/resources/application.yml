@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: ai-code-helper
+server:
+  port: 8081
+  servlet:
+    context-path: /api
+langchain4j:
+  community:
+    dashscope:
+      chat-model:
+        model-name: qwen-max
+        api-key: sk-645c1aad2c274d65b4ba3a73ecce2be4
+      streaming-chat-model:
+        model-name: qwen-max
+        api-key: sk-645c1aad2c274d65b4ba3a73ecce2be4
+      embedding-model:
+        model-name: text-embedding-v4
+        api-key: sk-645c1aad2c274d65b4ba3a73ecce2be4
+bigmodel:
+  api-key: 89baaece60a842b697310669442ce1c8.LQV9ltEo5woiAQUj

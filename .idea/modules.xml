@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SpringBoot-Power.iml" filepath="$PROJECT_DIR$/SpringBoot-Power.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ai-code-helper/ai-code-helper.iml" filepath="$PROJECT_DIR$/ai-code-helper/ai-code-helper.iml" />
     </modules>
   </component>
 </project>

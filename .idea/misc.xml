@@ -6,6 +6,7 @@
       <list>
         <option value="$PROJECT_DIR$/Shardingsphere-Power/pom.xml" />
         <option value="$PROJECT_DIR$/Nacos-Power/pom.xml" />
+        <option value="$PROJECT_DIR$/ai-code-helper/pom.xml" />
       </list>
     </option>
   </component>
